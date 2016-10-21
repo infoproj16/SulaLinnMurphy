@@ -1,0 +1,1 @@
+mysql --user="hourcade" --password=Z4H7yorrKWW3 db_hourcade
