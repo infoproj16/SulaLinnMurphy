@@ -13,4 +13,4 @@ CREATE TABLE pages (
 );
 
 /* Insert home page */
-INSERT INTO pages (urlTitle, pageTitle, menuTitle, parent, bodyTitle, body) VALUES ("home", "Home - Soccer Lover's Club", "home", -1, "Welcome to the Soccer Lover's Club", "Cleats, goals, and tackles.");
+INSERT INTO pages (urlTitle, pageTitle, menuTitle, parent, bodyTitle, body) VALUES ("home", "Home - Student Org", "home", -1, "Welcome to Your Page", "Events, News, & Information");
