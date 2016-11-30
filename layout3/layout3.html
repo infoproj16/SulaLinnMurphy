@@ -1,0 +1,137 @@
+<?php
+    include_once("dbutils.php");
+    include_once("config.php");
+    // get the page we are in
+    if (isset($_GET['page'])) {
+        $urlTitle = $_GET['page'];
+    } else {
+        $urlTitle = 'home';
+    }
+    
+    // get all the information about the page based on urlTitle
+    // get a handle to the database
+    $db = connectDB($dbHost, $dbUser, $dbPassword, $dbName);
+    $query = "select id, pageTitle, menuTitle, parent, bodyTitle, body from pages where urlTitle='" . $urlTitle . "'";
+    
+    $result = queryDB($query, $db);
+    if ($result) {
+        $numberofrows = nTuples($result);
+        
+        if ($numberofrows > 0) {
+            $row = nextTuple($result);
+            $id = $row['id'];
+            $pageTitle = $row['pageTitle'];
+            $menuTitle = $row['menuTitle'];
+            $parent = $row['parent'];
+            $bodyTitle = $row['bodyTitle'];
+            $body = $row['body'];
+        } else {
+        punt("Something went wrong when retrieving pages from the database.<p>" .
+                          "This was the error: " . $db->error . "<p>", $query);
+        }
+    } else {
+        punt("Something went wrong when retrieving pages from the database.<p>" .
+                          "This was the error: " . $db->error . "<p>", $query);
+    }   
+?>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="styles.css" type="text/css" />
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+</head>
+<body>
+<div id="container">
+
+    <header>
+	<div class="width">
+    		<h1><a href="/">Student Org</a></h1>
+       	</div>
+    </header>
+
+    <nav>
+	<div class="width">
+    		<ul>
+        		<li class="start selected"><a href="#">Home</a></li>
+        	    	<li class=""><a href="#">About</a></li>
+         	   	<li><a href="#">Calendar</a></li>
+          	  	<li><a href="#">Events</a></li>
+          	 	<li class="end"><a href="#">Contact</a></li>
+        	</ul>
+	</div>
+    </nav>
+
+    <div id="body" class="width">
+
+		<section id="content" class="three-column">
+
+	    <article>
+				
+			
+			<h2>Title Text</h2>
+			
+            <p>Text Here</p>
+
+
+		
+		</article>
+	
+		<article class="expanded">
+
+            		<h2>Title Text</h2>
+			
+            <p>Text Here</p>
+			
+		</article>
+        </section>
+        
+        <aside class="sidebar small-sidebar right-sidebar">
+	
+            <ul>	
+               <li>
+                    <h4>Content</h4>
+                    <ul class="blocklist">
+                        <li><a class="selected" href="#">Content</a></li>
+                        <li><a href="#">Content</a></li>
+                        <li><a href="#">Content</a></li>
+                        <li><a href="#">Content</a></li>
+                        <li><a href="#">Content</a></li>
+                    </ul>
+                </li>
+               
+                <li>
+			<h4>News</h4>
+			<ul class="newslist">
+				<li>
+					<p><span class="newslist-date">Date</span>
+			                   News text here</p>
+				</li>
+
+				<li>
+					<p><span class="newslist-date">Date</span>
+			                   News text here</p>
+ 
+				</li>
+			</ul>
+                </li>
+                
+            </ul>
+		
+        </aside>
+    	<div class="clear"></div>
+    </div>
+    <footer>
+         
+            <div class="clear"></div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; SulaLin</p>
+         </div>
+    </footer>
+</div>
+</body>
+</html>
