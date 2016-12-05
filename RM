@@ -1,0 +1,2 @@
+index.php?pageid=title&organizationid=
+Select * from pages where pageid ='' and organizationid = $orgid
