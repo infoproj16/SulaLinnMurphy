@@ -52,7 +52,7 @@
 		<div class="wrapper">
 			<!--<a href="#"><img src="img/Logo.jpg" alt="mysquare logo" title="mysquare - checkin and go home!" /></a>
 			-->
-			<span id="usernav"><a href="login1.php">Logout</a> - <a href="#">Settings</a> - <a href="dasboard.php">My Profile<span><img src="avatar.png" width="40" height="40" /></span></a></span>
+			<span id="usernav"><a href="login1.php">Logout</a> - <a href="#">Settings</a> - <a href="templatechoice.php">Create a Website</a>- <a href="dasboard.php">My Profile<span><img src="avatar.png" width="40" height="40" /></span></a></span>
 		</div>
 	</header>
 	
