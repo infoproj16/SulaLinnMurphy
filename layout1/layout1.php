@@ -7,11 +7,16 @@
     } else {
         $urlTitle = 'home';
     }
-    
+	
+    if (isset($_GET['organizationID'])) {
+        $OrganizationID = $_GET['organizationID'];
+    } else {
+        $OrganizationID = 1;
+    }    
     // get all the information about the page based on urlTitle
     // get a handle to the database
-    $db = connectDB($dbHost, $dbUser, $dbPassword, $dbName);
-    $query = "select id, pageTitle, menuTitle, parent, bodyTitle, body from pages where urlTitle='" . $urlTitle . "'";
+    $db = connectDB($DBHost, $DBUser, $DBPassword, $DBName);
+    $query = "select * from pages where urlTitle='" . $urlTitle . "' AND OrganizationID=" . $OrganizationID . ";";
     
     $result = queryDB($query, $db);
     if ($result) {
@@ -19,7 +24,7 @@
         
         if ($numberofrows > 0) {
             $row = nextTuple($result);
-            $id = $row['id'];
+            $id = $row['PageID'];
             $pageTitle = $row['pageTitle'];
             $menuTitle = $row['menuTitle'];
             $parent = $row['parent'];
@@ -44,7 +49,7 @@
         
 			</div>
 			<div class="col-xs-2">
-				<button class="button"><a href="input.php">Edit site</a></button>
+				<button class="button"><a href="input.php?OrganizationID=<?php echo $OrganizationID ?>">Edit site</a></button>
 			</div>
 		</div>
 </div>
@@ -79,7 +84,7 @@
 <?php   
     // query to get all child pages to the parent
     // here we assume that the home page has an id=1
-    $query = "select urlTitle, menuTitle from pages where parent=1";
+    $query = "select urlTitle, menuTitle from pages where parent=1 AND OrganizationID=" . $OrganizationID . ";";
     
     $result = queryDB($query, $db);
     if ($result) {
@@ -93,7 +98,7 @@
             } else {
                 echo "<li>";
             }
-            echo "<a href='layout1.php?page=" . $row['urlTitle'] . "'>" . $row['menuTitle'] . "</a></li>\n";
+            echo "<a href='layout1.php?page=" . $row['urlTitle'] . "&organizationID=" . $OrganizationID .  "'>" . $row['menuTitle'] . "</a></li>\n";
         }
     } else {
         punt("Something went wrong when retrieving pages from the database.<p>" .
@@ -115,10 +120,10 @@
         
         if ($parent == 1) {
             // if it's a second level page, show its children on the left side menu
-            $query = "select urlTitle, menuTitle from pages where parent=" . $id . " order by menuTitle";
+            $query = "select urlTitle, menuTitle from pages where parent=" . $id . " AND OrganizationID=" . $OrganizationID . " order by menuTitle;";
         } else {
             // if it's a third or lower level page, show its siblings on the left side menu
-            $query = "select urlTitle, menuTitle from pages where parent=" . $parent . " order by menuTitle";
+            $query = "select urlTitle, menuTitle from pages where parent=" . $parent . " AND OrganizationID=" . $OrganizationID . " order by menuTitle";
         }
         
         $result = queryDB($query, $db);
@@ -135,7 +140,7 @@
                 for($i=0; $i < $numberofrows; $i++) {
                     $row = nextTuple($result);
                     
-                    $rightSideMenu .= "\t\t\t<tr><td><a href='layout1.php?page=" . $row['urlTitle'] . "'>". $row['menuTitle'] ."</a></td></tr>\n";
+                    $rightSideMenu .= "\t\t\t<tr><td><a href='layout1.php?page=" . $row['urlTitle'] . "&organizationID=" . $OrganizationID . "'>". $row['menuTitle'] ."</a></td></tr>\n";
                 }
                 
                 $rightSideMenu .= "\t\t</table>\n";
@@ -164,7 +169,7 @@
         // we will iterate all the way to the home page and stop when the parent = -1, meaning we got to the home page
         while ($currParent != -1) {
             // get the parent
-            $query = "select urlTitle, menuTitle, parent from pages where id=" . $currParent;
+            $query = "select urlTitle, menuTitle, parent and organizationID from pages where pageID=" . $currParent . " AND OrganizationID=" . $OrganizationID . ";";
             
             $result = queryDB($query, $db);
             if ($result) {
@@ -173,7 +178,7 @@
                     $row = nextTuple($result);
                     
                     // add <li> item to breadcrumbs before the previous items, because we are moving up the hierarchy
-                    $innerLinks = "\t\t\t<li><a href=layout1.php?page=" . $row['urlTitle'] . "'>" . $row['menuTitle'] . "</a></li>\n" . $innerLinks;
+                    $innerLinks = "\t\t\t<li><a href=layout1.php?page=". $row['urlTitle'] . "&organizationID=" . $OrganizationID . "'>" . $row['menuTitle'] . "</a></li>\n" . $innerLinks;
                     
                     $currParent = $row['parent'];
                 } else {
