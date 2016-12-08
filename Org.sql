@@ -1,9 +1,18 @@
 DROP TABLE IF EXISTS pages;
 
+Drop table if exists Organization;
+	
+Create TABLE Organization (
+	OrganizationID INT NOT NULL AUTO_INCREMENT,
+	OrgTemplateID INT NOT Null,
+	primary key (OrganizationID)
+);
+
+
 /* This is a very simple table for a mysql-php example */
 CREATE TABLE pages (
     PageID INT NOT NULL AUTO_INCREMENT,
-    OrginizationID INT NOT NULL,
+    OrganizationID INT NOT NULL,
     urlTitle VARCHAR(32) NOT NULL, /* what word goes into the url that distinguishes this page from others */
     pageTitle VARCHAR(32) NOT NULL, /* title shown on bookmarks, tab, etc. */
     menuTitle VARCHAR(32) NOT NULL, /* title shown in menus */
@@ -11,54 +20,35 @@ CREATE TABLE pages (
     bodyTitle VARCHAR(128) NOT NULL, /* title shown in the body of the page */
     body TEXT, /* content of the page (only text for now) */
     PRIMARY KEY (PageID)
-
+);
 
 /* Insert home page */
+INSERT INTO Organization (OrgTemplateID) VALUES (1);
+INSERT INTO pages (urlTitle, pageTitle, menuTitle, parent, bodyTitle, body, OrganizationID) VALUES ("home", "Home - Soccer Lover's Club", "home", -1, "Welcome to the Soccer Lover's Club", "Cleats, goals, and tackles.", 1);
+
 
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
 	Userid INT NOT NULL AUTO_INCREMENT,
 	email VARCHAR(100) NOT NULL,
-	FirstName VARCHAR(25),
-	LastName VARCHAR (25),
 	hashedpass VARCHAR(255) NOT NULL,
-	OrginizationID int,
-	Admin int,
+	OrganizationID int NOT NULL,
+	Admin int NOT NULL,
 	PRIMARY KEY (Userid)
 );
 
 
-
-Drop table if exists Orginization;
-	
-Create TABLE Orginization (
-	OrginizationID INT NOT NULL,
-	OrgTemplateID INT NOT Null,
-	primary key (OrginizationID)
+Create Table OrgTemp(
+	OrgTemplateID INT NOT NULL Auto_Increment,
+	TemplateID Int,
+	OrganizationID INT,
+	Primary key (OrgTemplateID)
 );
 
-Create Table OrgTemp(
-	OrgTemplateID NOT NULL Auto_Increment,
-	TemplateID Int NOT NULL (foreign key),
-	OrginizationID INT NOT NULL (foreign key),
-	Primary key (OrgTemplateID)
-;)
-
 Drop table if exists Template;
+
 Create Table Template (
 	TemplateID int not null Auto_Increment,
 	primary key (TemplateID)
 );
-
-DROP TABLE IF EXISTS UserOrg
-Create Table UserOrg (
-	UserOrgID NOT NULL AUTO_INCREMENT,
-	UserID int not null (foreign key),
-	OrginizationID int not null (foreign key),
-	Adminlevel int not null,
-	Approval int not null,
-	PRIMARY key (UserOrgID)
-);
-
-
