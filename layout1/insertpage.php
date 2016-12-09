@@ -31,6 +31,11 @@
     $parent = $_POST['parent'];
     $body = $_POST['body'];
     
+     if (isset($_GET['OrganizationID'])) {
+        $OrganizationID = $_GET['OrganizationID'];
+    } else {
+        $OrganizationID =1;
+    }        
     
     // check that we have the data we need
     if (!$urlTitle) {
@@ -65,7 +70,7 @@
     }
     
     // get a handle to the database
-    $db = connectDB($dbHost, $dbUser, $dbPassword, $dbName);
+    $db = connectDB($DBHost, $DBUser, $DBPassword, $DBName);
     
     // add escape characters to text    
     $pageTitle = $db->real_escape_string($pageTitle);
@@ -74,7 +79,7 @@
     $body = $db->real_escape_string($body);
 
     // check if url title is already in the table
-    $urlCheckQuery = "select * from pages where urlTitle='" . $urlTitle . "'";
+    $urlCheckQuery = "select * from pages where urlTitle='" . $urlTitle . "' AND OrganizationID=" . $OrganizationID . ";";
     $result = queryDB($urlCheckQuery, $db);
     if ($result) {
         $numberofrows = nTuples($result);
@@ -87,9 +92,9 @@
     }
     
     // prepare sql statement
-    $query = "insert into pages (urlTitle, pageTitle, menuTitle, parent, bodyTitle, body)
+    $query = "insert into pages (urlTitle, pageTitle, menuTitle, parent, bodyTitle, body, OrganizationID)
         values ('" . $urlTitle . "', '" . $pageTitle . "', '" . $menuTitle . "', " .
-        $parent . ", '" . $bodyTitle . "', '" . $body . "');";
+        $parent . ", '" . $bodyTitle . "', '" . $body . "', '" . $OrganizationID . "');";
     
     // execute sql statement
     $result = queryDB($query, $db);
