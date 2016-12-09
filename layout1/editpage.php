@@ -3,7 +3,7 @@
     include_once("config.php");
 
      // get data from fields
-    $id = $_POST['id'];
+    $id = $_POST['PageID'];
     $urlTitle = $_POST['urlTitle'];
     $pageTitle = $_POST['pageTitle'];
     $menuTitle = $_POST['menuTitle'];
@@ -55,7 +55,7 @@
     }
     
     // get a handle to the database
-    $db = connectDB($dbHost, $dbUser, $dbPassword, $dbName);
+    $db = connectDB($DBHost, $DBUser, $DBPassword, $DBName);
 
     // add escape characters to text    
     $pageTitle = $db->real_escape_string($pageTitle);
@@ -65,7 +65,7 @@
 
     
     // check if url title is already in the table
-    $urlCheckQuery = "select * from pages where urlTitle='" . $urlTitle . "' AND id!=". $id;
+    $urlCheckQuery = "select * from pages where urlTitle='" . $urlTitle . "' AND OrganizationID=" . $OrganizationID . " AND PageID!=". $id;
     $result = queryDB($urlCheckQuery, $db);
     if ($result) {
         $numberofrows = nTuples($result);
@@ -83,7 +83,7 @@
 	. "', bodyTitle='" . $bodyTitle 
 	. "', body='" . $body
 	. "', parent=" . $parent
-	. " WHERE id = " . $id . ";";
+	. " WHERE PageID = " . $id . ";";
     
     $result = queryDB($updateQuery, $db);
     
